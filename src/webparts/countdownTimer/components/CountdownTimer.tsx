@@ -18,7 +18,7 @@ export default class CountdownTimer extends React.Component<ICountdownTimerProps
 
   constructor(props: any){
     super(props);
-    console.log(this.props.endDate);
+   
     if(this.props.endDate !== undefined)
     {
       this.state = {

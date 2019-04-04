@@ -31,15 +31,11 @@ export default class CountdownTimerWebPart extends BaseClientSideWebPart<ICountd
   protected _endDate: IDateTimeFieldValue = {value: new Date(), displayValue: new Date().toDateString() };
 
   public onInit<T>(): Promise<T> {
-    console.log(this.properties.endDate);
-    console.log(this._endDate);
+ 
     if(this.properties.endDate !== undefined)
-    {
-      
+    {      
       var date = new Date(this.properties.endDate); 
-      this._endDate = {value: date, displayValue: date.toDateString() };
-      
-      console.log(this._endDate);
+      this._endDate = {value: date, displayValue: date.toDateString() };      
     }
     if(this.properties.backgroundColor !== undefined)
     {
@@ -98,9 +94,7 @@ export default class CountdownTimerWebPart extends BaseClientSideWebPart<ICountd
         this._backgroundcolor= newValue;
         break;
       case 'endDate':
-      console.log(newValue.value);
-      var date = new Date(newValue.value); 
-      //this._endDate = {value: date, displayValue: date.toDateString() };
+       var date = new Date(newValue.value); 
         this.properties.endDate = newValue.value;
         this._endDate = {value: date, displayValue: date.toDateString() };
         break;
