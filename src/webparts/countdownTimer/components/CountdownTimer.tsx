@@ -18,14 +18,26 @@ export default class CountdownTimer extends React.Component<ICountdownTimerProps
 
   constructor(props: any){
     super(props);
-
-    this.state = {
-      daysSpan : 0,
-      hoursSpan : 0,
-      minutesSpan : 0,
-      secondsSpan : 0,
-      showPlaceholder: true
-    };
+    console.log(this.props.endDate);
+    if(this.props.endDate !== undefined)
+    {
+      this.state = {
+        daysSpan : 0,
+        hoursSpan : 0,
+        minutesSpan : 0,
+        secondsSpan : 0,
+        showPlaceholder: false
+      };
+    }
+    else{
+      this.state = {
+        daysSpan : 0,
+        hoursSpan : 0,
+        minutesSpan : 0,
+        secondsSpan : 0,
+        showPlaceholder: true
+      };
+    }
   }
 
   public componentDidUpdate(prevProps: any, prevState: any) {
@@ -46,13 +58,14 @@ export default class CountdownTimer extends React.Component<ICountdownTimerProps
     }
 }
 
-  /*public componentDidMount() {
+  public componentDidMount() {
+    console.log(this.state.showPlaceholder);
     if(this.props.endDate)
-      this.initializeClock(this.props.endDate.value);
-  }*/
+      this.initializeClock(this.props.endDate);
+  }
 
   public componentWillUnmount() {
-      clearInterval(this.timeinterval);
+     // clearInterval(this.timeinterval);
   }
 
   private _configureWebPart = () => {

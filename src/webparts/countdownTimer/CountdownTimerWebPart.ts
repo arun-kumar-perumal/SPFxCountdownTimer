@@ -20,6 +20,9 @@ import { IDateTimeFieldValue } from "@pnp/spfx-property-controls/lib/PropertyFie
 export interface ICountdownTimerWebPartProps {
   description: string;
   title: string;
+  backgroundColor : string;
+  fontcolor : string;
+  endDate : string;
 }
 
 export default class CountdownTimerWebPart extends BaseClientSideWebPart<ICountdownTimerWebPartProps> {
@@ -27,15 +30,41 @@ export default class CountdownTimerWebPart extends BaseClientSideWebPart<ICountd
   protected _fontcolor = '#fff';
   protected _endDate: IDateTimeFieldValue = {value: new Date(), displayValue: new Date().toDateString() };
 
+  public onInit<T>(): Promise<T> {
+    console.log(this.properties.endDate);
+    console.log(this._endDate);
+    if(this.properties.endDate !== undefined)
+    {
+      
+      var date = new Date(this.properties.endDate); 
+      this._endDate = {value: date, displayValue: date.toDateString() };
+      
+      console.log(this._endDate);
+    }
+    if(this.properties.backgroundColor !== undefined)
+    {
+      this._backgroundcolor = this.properties.backgroundColor;
+    }
+  
+    if(this.properties.fontcolor !== undefined)
+    {
+      this._fontcolor= this.properties.fontcolor;
+    }
+    
+    return Promise.resolve();
+   
+  }
+
   public render(): void {
+
     const element: React.ReactElement<ICountdownTimerProps > = React.createElement(
       CountdownTimer,
       {
         description: this.properties.description,
         title: this.properties.title,
-        endDate: this._endDate,
-        backgroundcolor: this._backgroundcolor,
-        fontcolor: this._fontcolor,
+        endDate: this.properties.endDate,
+        backgroundcolor: this.properties.backgroundColor,
+        fontcolor: this.properties.fontcolor,
         context: this.context
       }
     );
@@ -60,14 +89,20 @@ export default class CountdownTimerWebPart extends BaseClientSideWebPart<ICountd
   
   protected onPropertyPaneFieldChanged(propPath: string, oldValue: any, newValue:any): void {
     switch (propPath) {
-      case 'font color':
+      case 'fontcolor':
+        this.properties.fontcolor = newValue;
         this._fontcolor = newValue;
         break;
-      case 'background color':
-        this._backgroundcolor = newValue;
+      case 'backgroundcolor':
+        this.properties.backgroundColor = newValue;
+        this._backgroundcolor= newValue;
         break;
-      case 'end date':
-        this._endDate = newValue.value;
+      case 'endDate':
+      console.log(newValue.value);
+      var date = new Date(newValue.value); 
+      //this._endDate = {value: date, displayValue: date.toDateString() };
+        this.properties.endDate = newValue.value;
+        this._endDate = {value: date, displayValue: date.toDateString() };
         break;
       default:
         break;
@@ -92,7 +127,7 @@ export default class CountdownTimerWebPart extends BaseClientSideWebPart<ICountd
                   placeholder: 'Countdown',
                   maxLength: 50                  
                 }),
-                PropertyFieldDateTimePicker('end date', {
+                PropertyFieldDateTimePicker('endDate', {
                   label: 'Select the enddate and time',
                   initialDate: this._endDate,
                   dateConvention: DateConvention.DateTime,
@@ -115,7 +150,7 @@ export default class CountdownTimerWebPart extends BaseClientSideWebPart<ICountd
             {
               groupName: strings.ColorGroupName,
               groupFields: [
-                PropertyFieldColorPicker("font color", {
+                PropertyFieldColorPicker("fontcolor", {
                   label: "Font Color",
                   selectedColor: this._fontcolor,
                   onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
@@ -126,7 +161,7 @@ export default class CountdownTimerWebPart extends BaseClientSideWebPart<ICountd
                   iconName: "Precipitation",
                   key: "colorFieldId"
                 }),
-                PropertyFieldColorPicker("background color", {
+                PropertyFieldColorPicker("backgroundcolor", {
                   label: "Background Color",
                   selectedColor: this._backgroundcolor,
                   onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),

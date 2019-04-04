@@ -20,7 +20,8 @@
     "description": { "default": "counting down to set date" },
     "officeFabricIconFontName": "Timer",
     "properties": {
-      "description": "CountdownTimer"
+      "description": "CountdownTimer",
+      "title": "Countdown"
     }
   }]
 }
